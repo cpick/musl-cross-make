@@ -153,13 +153,20 @@ prep ()
 
     cd "${tdir}";
 
-    export PATH="${sdir}/bin:$PATH";
+    (                           # subshell for isolation
+        export PATH="${sdir}/bin:$PATH";
 
-    ../configure --prefix="${sdir}" ${_cnf};
-    make -j$(sysctl hw.logicalcpu | awk '{print $2}');
-    make install;
+        export CPPFLAGS="-I${sdir}/include";
+        export CFLAGS="";
+        export CXXFLAGS="";
+        export LDFLAGS="-L${sdir}/lib";
 
-    touch "${sdir}/._${base}";
+        ../configure --prefix="${sdir}" ${_cnf};
+        make -j$(sysctl hw.logicalcpu | awk '{print $2}');
+        make install;
+
+        touch "${sdir}/._${base}";
+    )
 }
 
 # (no args) Builds production toolchains for mac.musl.cc
@@ -226,8 +233,6 @@ prep j 1 ${M_ISL}/isl-${V_ISL}.tar.xz                          \
 prep j 1 ${M_GNU}/coreutils/coreutils-${V_CUT}.tar.xz          \
     --disable-shared                                           \
     --enable-static                                            \
-    CFLAGS="-I${sdir}/include"                                 \
-    LDFLAGS="-L${sdir}/lib"                                    \
     FORCE_UNSAFE_CONFIGURE=1                                   \
     ;
 
@@ -253,4 +258,4 @@ fi
 #---------------------------------------------------------------
 # Stage 2: Production toolchains
 
-musl;
+#musl;
