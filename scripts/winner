@@ -112,13 +112,13 @@
 # will be harvested from a "donor" toolchain; these versions do
 # not necessarily correspond to what is built here (yet, TODO).
 #
-GCC_VER=9-20190831
-BINUTILS_VER=2.32
-MUSL_VER=git-6ad514e4e278f0c3b18eb2db1d45638c9af1c07f
+GCC_VER=9-20191214
+BINUTILS_VER=2.33.1
+MUSL_VER=git-2412638bb39eb799b2600393bbd71cca8ae96bb2
 GMP_VER=6.1.2
 MPC_VER=1.1.0
 MPFR_VER=4.0.2
-LINUX_VER=4.19.69               # TODO: proper install, no rsync
+LINUX_VER=4.19.90               # TODO: proper install, no rsync
 
 ## Directories
 #
@@ -153,11 +153,11 @@ nsuf=-native                    # native suffix
 # Values can be found at 'https://more.musl.cc/' where the $user
 # variable corresponds to your build platform, and $host to your
 # intended Windows development environment. Note that unless the
-# website says otherwise, only the 'x86_64-linux-musl' toolchain
+# website says otherwise, only the 'i686-linux-musl' toolchain
 # directory is up-to-date. If you can't find what you're looking
 # for you must build a MinGW-w64 suitable toolchain from source.
 #
-user=x86_64-linux-musl          # platform that builds suite
+user=i686-linux-musl            # platform that builds suite
 host=i686-w64-mingw32           # platform that   runs suite
 
 ## Build Environment
