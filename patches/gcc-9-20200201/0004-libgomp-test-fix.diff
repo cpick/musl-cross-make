@@ -1,14 +1,3 @@
-From 61c15ebc2895bdee5f4460a17b015bb47177fa90 Mon Sep 17 00:00:00 2001
-From: Szabolcs Nagy <nsz@port70.net>
-Date: Sun, 6 Nov 2016 03:11:18 +0000
-Subject: [PATCH 04/13] libgomp test fix
-
----
- libgomp/testsuite/Makefile.am     | 6 ++++++
- libgomp/testsuite/Makefile.in     | 5 +++++
- libgomp/testsuite/lib/libgomp.exp | 3 +++
- 3 files changed, 14 insertions(+)
-
 diff --git a/libgomp/testsuite/Makefile.am b/libgomp/testsuite/Makefile.am
 index 2100f49e53b..fa25b3a0604 100644
 --- a/libgomp/testsuite/Makefile.am
@@ -70,6 +59,3 @@ index 14d9b5f1305..186b0ba0b57 100644
  	} else {
  	    set GCC_UNDER_TEST "[find_gcc]"
  	}
--- 
-2.21.0
-

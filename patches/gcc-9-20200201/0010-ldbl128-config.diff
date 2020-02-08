@@ -1,13 +1,3 @@
-From 62eb7906083601d6ede06af5155962db468ae12a Mon Sep 17 00:00:00 2001
-From: Szabolcs Nagy <nsz@port70.net>
-Date: Wed, 28 Feb 2018 00:54:05 +0000
-Subject: [PATCH 10/13] ldbl128 config
-
----
- gcc/configure    | 13 +++++++++++++
- gcc/configure.ac | 16 ++++++++++++++--
- 2 files changed, 27 insertions(+), 2 deletions(-)
-
 diff --git a/gcc/configure b/gcc/configure
 index 3dcf7752b7f..78aaa36dce6 100755
 --- a/gcc/configure
@@ -71,6 +61,3 @@ index 51f520c1508..a6498239698 100644
      ;;
  esac
  if test x$gcc_cv_target_ldbl128 = xyes; then
--- 
-2.21.0
-

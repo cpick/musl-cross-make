@@ -1,12 +1,3 @@
-From ac360932a8b0b65897244ce74173efd9c9083d84 Mon Sep 17 00:00:00 2001
-From: Szabolcs Nagy <nsz@port70.net>
-Date: Fri, 26 Jan 2018 20:25:11 +0000
-Subject: [PATCH 09/13] microblaze-pr65649
-
----
- gcc/config/microblaze/microblaze.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
 diff --git a/gcc/config/microblaze/microblaze.c b/gcc/config/microblaze/microblaze.c
 index 55c1becf975..45395ab86f1 100644
 --- a/gcc/config/microblaze/microblaze.c
@@ -29,6 +20,3 @@ index 55c1becf975..45395ab86f1 100644
    else
      output_addr_const (file, op);
  }
--- 
-2.21.0
-

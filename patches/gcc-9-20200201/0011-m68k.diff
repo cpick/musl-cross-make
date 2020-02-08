@@ -1,13 +1,3 @@
-From ed15d6ccf4bf842efad99fa909ff04c7eb681a7d Mon Sep 17 00:00:00 2001
-From: Szabolcs Nagy <nsz@port70.net>
-Date: Sun, 1 Jul 2018 18:34:01 +0000
-Subject: [PATCH 11/13] m68k
-
----
- gcc/config/m68k/linux.h           | 3 +++
- libgcc/config/m68k/linux-unwind.h | 2 +-
- 2 files changed, 4 insertions(+), 1 deletion(-)
-
 diff --git a/gcc/config/m68k/linux.h b/gcc/config/m68k/linux.h
 index ebdf0281071..beef554b31c 100644
 --- a/gcc/config/m68k/linux.h
@@ -35,6 +25,3 @@ index fbe0d4748ba..57c354ee9b4 100644
  };
  
  #define MD_FALLBACK_FRAME_STATE_FOR m68k_fallback_frame_state
--- 
-2.21.0
-
