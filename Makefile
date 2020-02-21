@@ -22,7 +22,7 @@ GCC_SNAP = https://sourceware.org/pub/gcc/snapshots
 
 ISL_SITE = http://isl.gforge.inria.fr/
 
-MUSL_SITE = https://www.musl-libc.org/releases
+MUSL_SITE = https://musl.libc.org/releases
 MUSL_REPO = git://git.musl-libc.org/musl
 MUSL_RISC = https://github.com/riscv/riscv-musl
 
