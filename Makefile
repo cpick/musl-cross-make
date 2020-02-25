@@ -3,7 +3,7 @@ SOURCES = sources
 CONFIG_SUB_REV = 3d5db9ebe860
 BINUTILS_VER = 2.33.1
 GCC_VER = 9.2.0
-MUSL_VER = 1.1.24
+MUSL_VER = 1.2.0
 GMP_VER = 6.1.2
 MPC_VER = 1.1.0
 MPFR_VER = 4.0.2
@@ -147,7 +147,7 @@ musl-riscv-%:
 	case "$@" in */*) exit 1 ;; esac
 	rm -rf $@.tmp
 	mkdir $@.tmp
-	( cd $@.tmp && find ../$< -path '*/*/*' -prune -exec sh -c 'ln -s "$$@" .' ':' {} + )
+	( cd $@.tmp && $(COWPATCH) -I ../$< )
 	test ! -d patches/$@ || cat patches/$@/* | ( cd $@.tmp && $(COWPATCH) -p1 )
 	test ! -f $</config.sub || ( rm -f $@.tmp/config.sub && cp -f $(SOURCES)/config.sub $@.tmp/ && chmod +x $@.tmp/config.sub )
 	rm -rf $@
