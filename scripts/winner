@@ -5,7 +5,7 @@
 # Purpose  : Builds Windows-to-Linux cross-compiler toolchains.
 # Authors  : Zach van Rijn <me@zv.io>
 # License  : MIT
-# Revision : 20190509
+# Revision : 20200303
 #===============================================================
 
 #---------------------------------------------------------------
@@ -112,9 +112,9 @@
 # will be harvested from a "donor" toolchain; these versions do
 # not necessarily correspond to what is built here (yet, TODO).
 #
-GCC_VER=9-20191214
-BINUTILS_VER=2.33.1
-MUSL_VER=git-2412638bb39eb799b2600393bbd71cca8ae96bb2
+GCC_VER=9-20200229
+BINUTILS_VER=2.34
+MUSL_VER=1.2.0
 GMP_VER=6.1.2
 MPC_VER=1.1.0
 MPFR_VER=4.0.2
@@ -175,7 +175,7 @@ kale="${base}/${host}${csuf}/bin:${base}/${user}${csuf}/bin";
 #
 name=musl-cross-make
 repo=https://git.zv.io/toolchains/${name}
-brch=musl-git                   # branch name (no assumptions!)
+brch=master                     # branch name (no assumptions!)
 
 ## Suite Targets
 #
