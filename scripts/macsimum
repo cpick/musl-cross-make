@@ -5,7 +5,7 @@
 # Purpose  : Builds Mac-to-Linux cross-compiler toolchains.
 # Authors  : Zach van Rijn <me@zv.io>
 # License  : MIT
-# Revision : 20191220
+# Revision : 20200303
 #===============================================================
 
 #---------------------------------------------------------------
@@ -60,7 +60,7 @@ V_MPF=4.0.2 ;
 V_MPC=1.1.0 ;
 V_ISL=0.21  ;
 V_GCC=9.2.0 ;
-V_BUT=2.33.1;
+V_BUT=2.34  ;
 
 V_GM4=1.4.18;
 V_BIS=3.4.2 ;
@@ -72,7 +72,7 @@ V_CUT=8.31  ;
 # Production compiler configuration data (or use heredoc)
 
 tool=musl-cross-make;           # musl-cross-make repository
-conf=$(curl -s https://conf.musl.cc/mac_20191220_9-2-1.txt);
+conf=$(curl -s https://conf.musl.cc/mac_20200229_9-2-1.txt);
 
 
 #---------------------------------------------------------------
@@ -258,4 +258,4 @@ fi
 #---------------------------------------------------------------
 # Stage 2: Production toolchains
 
-#musl;
+musl;
