@@ -119,7 +119,7 @@ FULL_GCC_CONFIG += --with-build-sysroot=$(CURDIR)/obj_sysroot \
 	STRIP_FOR_TARGET=$(PWD)/obj_binutils/binutils/strip-new \
 	--build=$(BUILD) --host=$(BUILD) \
 	# end
-FULL_MUSL_CONFIG += CC="$(XGCC)" LIBCC="../obj_gcc/$(TARGET)/libgcc/libgcc.a" 
+FULL_MUSL_CONFIG += CC="$(XGCC)" LIBCC="../obj_gcc/$(TARGET)/libgcc/libgcc.a"
 MUSL_VARS = AR=../obj_binutils/binutils/ar RANLIB=../obj_binutils/binutils/ranlib
 obj_musl/.lc_configured: | obj_gcc/gcc/.lc_built
 obj_musl/.lc_built: | obj_gcc/$(TARGET)/libgcc/libgcc.a
@@ -218,19 +218,19 @@ obj_sysroot/lib64: | obj_sysroot
 	ln -sf lib $@
 
 obj_binutils/.lc_configured: | obj_binutils src_binutils
-	cd obj_binutils && ../src_binutils/configure $(FULL_BINUTILS_CONFIG)
+	cd obj_binutils && ../src_binutils/configure $(FULL_BINUTILS_CONFIG) CC_FOR_BUILD="$(CC) $(STAT)" CXX_FOR_BUILD="$(CXX) $(STAT)"
 	touch $@
 
 obj_binutils/.lc_built: | obj_binutils/.lc_configured
-	cd obj_binutils && $(MAKE) MAKE="$(MAKE) $(LIBTOOL_ARG)" all
+	cd obj_binutils && $(MAKE) MAKE="$(MAKE) $(LIBTOOL_ARG)" all CC_FOR_BUILD="$(CC) $(STAT)" CXX_FOR_BUILD="$(CXX) $(STAT)"
 	touch $@
 
 obj_gcc/.lc_configured: | obj_gcc src_gcc
-	cd obj_gcc && ../src_gcc/configure $(FULL_GCC_CONFIG)
+	cd obj_gcc && ../src_gcc/configure $(FULL_GCC_CONFIG) CC_FOR_BUILD="$(CC) $(STAT)" CXX_FOR_BUILD="$(CXX) $(STAT)"
 	touch $@
 
 obj_gcc/gcc/.lc_built: | obj_gcc/.lc_configured
-	cd obj_gcc && $(MAKE) MAKE="$(MAKE) $(LIBTOOL_ARG)" all-gcc
+	cd obj_gcc && $(MAKE) MAKE="$(MAKE) $(LIBTOOL_ARG)" all-gcc CC_FOR_BUILD="$(CC) $(STAT)" CXX_FOR_BUILD="$(CXX) $(STAT)"
 	touch $@
 
 obj_musl/.lc_configured: | obj_musl src_musl
@@ -242,7 +242,7 @@ obj_sysroot/.lc_headers: | obj_musl/.lc_configured obj_sysroot
 	touch $@
 
 obj_gcc/$(TARGET)/libgcc/libgcc.a: | obj_sysroot/.lc_headers
-	cd obj_gcc && $(MAKE) MAKE="$(MAKE) enable_shared=no $(LIBTOOL_ARG)" all-target-libgcc
+	cd obj_gcc && $(MAKE) MAKE="$(MAKE) enable_shared=no $(LIBTOOL_ARG)" all-target-libgcc CC_FOR_BUILD="$(CC) $(STAT)" CXX_FOR_BUILD="$(CXX) $(STAT)"
 
 obj_musl/.lc_built: | obj_musl/.lc_configured
 	cd obj_musl && $(MAKE) $(MUSL_VARS)
@@ -253,7 +253,7 @@ obj_sysroot/.lc_libs: | obj_musl/.lc_built
 	touch $@
 
 obj_gcc/.lc_built: | obj_gcc/.lc_configured obj_gcc/gcc/.lc_built
-	cd obj_gcc && $(MAKE) MAKE="$(MAKE) $(LIBTOOL_ARG)"
+	cd obj_gcc && $(MAKE) MAKE="$(MAKE) $(LIBTOOL_ARG)" CC_FOR_BUILD="$(CC) $(STAT)" CXX_FOR_BUILD="$(CXX) $(STAT)"
 	touch $@
 
 install-musl: | obj_musl/.lc_built
@@ -279,7 +279,7 @@ src_kernel_headers: | $(LINUX_SRCDIR)
 	ln -sf "$(LINUX_SRCDIR)" $@
 obj_kernel_headers/.lc_built: | src_kernel_headers
 	mkdir -p $(CURDIR)/obj_kernel_headers/staged
-	cd src_kernel_headers && $(MAKE) ARCH=$(LINUX_ARCH) O=$(CURDIR)/obj_kernel_headers INSTALL_HDR_PATH=$(CURDIR)/obj_kernel_headers/staged headers_install
+	cd src_kernel_headers && $(MAKE) ARCH=$(LINUX_ARCH) O=$(CURDIR)/obj_kernel_headers INSTALL_HDR_PATH=$(CURDIR)/obj_kernel_headers/staged headers_install HOSTCC="$(CC) $(STAT)"
 	find obj_kernel_headers/staged/include '(' -name .install -o -name ..install.cmd ')' -exec rm {} +
 	touch $@
 install-kernel-headers: | obj_kernel_headers/.lc_built
