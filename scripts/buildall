@@ -5,6 +5,7 @@ HERE=$(dirname $(readlink -f ${0}))
 LIST=${HERE}/triples.txt
 LOGS=${HERE}/../logs
 BINS=${HERE}/../output
+OBJS=${HERE}/../build
 
 CSUF=cross
 NSUF=native
@@ -12,21 +13,33 @@ NSUF=native
 KALE="${PATH}"
 
 mkdir -p ${LOGS} ${BINS}
-for t in $(cat ${LIST} | grep -v "#"); do
-    [ -d ${BINS}/${t}-${CSUF} ] || make -O install \
+
+grep -v ^# "${LIST}" | while read t; do
+    # CROSS BUILD
+    [ -d ${BINS}/${t}-${CSUF} ] || make install \
         TARGET=${t} OUTPUT=${BINS}/${t}-${CSUF} \
         -j$(nproc) 2>&1 | tee ${LOGS}/${t}-${CSUF}.log
+
+    # CROSS PACKAGE
+    [ -h ${BINS}/${t}-${CSUF}/usr ] || (cd ${BINS}/${t}-${CSUF} && ln -s . usr)
+    [ -e ${BINS}/${t}-${CSUF}.tgz ] || (cd ${BINS} && tar pczf ${t}-${CSUF}.tgz ${t}-${CSUF})
+
+    # CROSS CLEANUP
+    rm -fr ${OBJS}/local/${t}
+
+    # NATIVE BUILD
     if [ -d ${BINS}/${t}-${CSUF} ]; then
         export PATH="${KALE}:${BINS}/${t}-${CSUF}/bin"
-        [ -d ${BINS}/${t}-${NSUF} ] || make -O install NATIVE=1 \
+        [ -d ${BINS}/${t}-${NSUF} ] || make install NATIVE=1 \
             TARGET=${t} CROSS_COMPILE=${t}- OUTPUT=${BINS}/${t}-${NSUF} \
             -j$(nproc) 2>&1 | tee ${LOGS}/${t}-${NSUF}.log
         export PATH="${KALE}"
     fi;
-done;
 
-cd ${BINS}
-for t in $(find . -mindepth 1 -maxdepth 1 -type d); do
-    [ -h ${t}/usr ] || (cd ${t} && ln -s . usr)
-    [ -e ${t}.tgz ] || tar pczf ${t}.tgz ${t};
-done
+    # NATIVE PACKAGE
+    [ -h ${BINS}/${t}-${NSUF}/usr ] || (cd ${BINS}/${t}-${NSUF} && ln -s . usr)
+    [ -e ${BINS}/${t}-${NSUF}.tgz ] || (cd ${BINS} && tar pczf ${t}-${NSUF}.tgz ${t}-${NSUF});
+
+    # NATIVE CLEANUP
+    rm -fr ${OBJS}/${t}
+done;
