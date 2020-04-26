@@ -30,7 +30,7 @@ GCC_CONFIG_FOR_TARGET += --enable-languages=c,c++
 endif
 
 ifneq ($(findstring powerpc64,$(TARGET)),)
-GCC_CONFIG_FOR_TARGET += --with-abi=elfv2
+GCC_CONFIG_FOR_TARGET += --with-abi=elfv2 --with-cpu=970
 endif
 
 ifneq ($(findstring mips64,$(TARGET))$(findstring mipsisa64,$(TARGET)),)
