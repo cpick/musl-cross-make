@@ -3,43 +3,14 @@
 HERE=$(dirname $(readlink -f ${0}))
 
 LIST=${HERE}/triples.txt
-LOGS=${HERE}/../logs
-BINS=${HERE}/../output
-OBJS=${HERE}/../build
 
-CSUF=cross
-NSUF=native
+##
+# WARNING: YOU MUST BE INSANE TO USE A VALUE GREATER THAN 1 HERE.
+# This means: "Run N jobs, each job with M threads" where M is 'nproc'.
+# Why? Useful for bruteforcing toolchain builds and keeping CPU busy.
+# You may destroy an SSD with too high of a value. Use a ramdisk only.
+#
+JOBS=6;
 
-KALE="${PATH}"
-
-mkdir -p ${LOGS} ${BINS}
-
-grep -v ^# "${LIST}" | while read t; do
-    # CROSS BUILD
-    [ -d ${BINS}/${t}-${CSUF} ] || make install \
-        TARGET=${t} OUTPUT=${BINS}/${t}-${CSUF} \
-        -j$(nproc) 2>&1 | tee ${LOGS}/${t}-${CSUF}.log
-
-    # CROSS PACKAGE
-    [ -h ${BINS}/${t}-${CSUF}/usr ] || (cd ${BINS}/${t}-${CSUF} && ln -s . usr)
-    [ -e ${BINS}/${t}-${CSUF}.tgz ] || (cd ${BINS} && tar pczf ${t}-${CSUF}.tgz ${t}-${CSUF})
-
-    # CROSS CLEANUP
-    rm -fr ${OBJS}/local/${t}
-
-    # NATIVE BUILD
-    if [ -d ${BINS}/${t}-${CSUF} ]; then
-        export PATH="${KALE}:${BINS}/${t}-${CSUF}/bin"
-        [ -d ${BINS}/${t}-${NSUF} ] || make install NATIVE=1 \
-            TARGET=${t} CROSS_COMPILE=${t}- OUTPUT=${BINS}/${t}-${NSUF} \
-            -j$(nproc) 2>&1 | tee ${LOGS}/${t}-${NSUF}.log
-        export PATH="${KALE}"
-    fi;
-
-    # NATIVE PACKAGE
-    [ -h ${BINS}/${t}-${NSUF}/usr ] || (cd ${BINS}/${t}-${NSUF} && ln -s . usr)
-    [ -e ${BINS}/${t}-${NSUF}.tgz ] || (cd ${BINS} && tar pczf ${t}-${NSUF}.tgz ${t}-${NSUF});
-
-    # NATIVE CLEANUP
-    rm -fr ${OBJS}/${t}
-done;
+make extract_all;
+grep -v ^# "${LIST}" | parallel --eta --bar --progress -j${JOBS} -a - ${HERE}/build;

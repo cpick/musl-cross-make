@@ -1,0 +1,46 @@
+#!/bin/sh
+
+HERE=$(dirname $(readlink -f ${0}))
+
+LOGS=${HERE}/../logs
+BINS=${HERE}/../output
+OBJS=${HERE}/../build
+
+CSUF=cross
+NSUF=native
+
+KALE="${PATH}"
+
+mkdir -p ${LOGS} ${BINS}
+
+# CROSS BUILD
+[ -d ${BINS}/${1}-${CSUF} ] || make install \
+    TARGET=${1} OUTPUT=${BINS}/${1}-${CSUF} \
+    -j$(nproc) 2>&1 | tee ${LOGS}/${1}-${CSUF}.log
+
+# CROSS PACKAGE
+[ -h ${BINS}/${1}-${CSUF}/usr ] || (cd ${BINS}/${1}-${CSUF} && ln -s . usr)
+[ -e ${BINS}/${1}-${CSUF}.tgz ] || (cd ${BINS} && tar pczf ${1}-${CSUF}.tgz ${1}-${CSUF})
+
+# CROSS CLEANUP
+rm -fr ${OBJS}/local/${1}
+
+# NATIVE BUILD
+if [ -d ${BINS}/${1}-${CSUF} ]; then
+    export PATH="${KALE}:${BINS}/${1}-${CSUF}/bin"
+    [ -d ${BINS}/${1}-${NSUF} ] || make install NATIVE=1 \
+        TARGET=${1} CROSS_COMPILE=${1}- OUTPUT=${BINS}/${1}-${NSUF} \
+        -j$(nproc) 2>&1 | tee ${LOGS}/${1}-${NSUF}.log
+    export PATH="${KALE}"
+fi;
+
+# NATIVE PACKAGE
+[ -h ${BINS}/${1}-${NSUF}/usr ] || (cd ${BINS}/${1}-${NSUF} && ln -s . usr)
+[ -e ${BINS}/${1}-${NSUF}.tgz ] || (cd ${BINS} && tar pczf ${1}-${NSUF}.tgz ${1}-${NSUF});
+
+# NATIVE CLEANUP
+rm -fr ${OBJS}/${1}
+
+# DIRECTORY CLEANUP
+rm -fr ${BINS}/${1}-${CSUF};
+rm -fr ${BINS}/${1}-${NSUF};
