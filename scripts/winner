@@ -112,13 +112,13 @@
 # will be harvested from a "donor" toolchain; these versions do
 # not necessarily correspond to what is built here (yet, TODO).
 #
-GCC_VER=9-20200229
+GCC_VER=9.3.0
 BINUTILS_VER=2.34
-MUSL_VER=1.2.0
-GMP_VER=6.1.2
+MUSL_VER=git-0a005f499cf39822166dd4db3d2d31f0639f1b1b
+GMP_VER=6.2.0
 MPC_VER=1.1.0
-MPFR_VER=4.0.2
-LINUX_VER=4.19.90               # TODO: proper install, no rsync
+MPFR_VER=4.1.0
+LINUX_VER=5.4.50               # TODO: proper install, no rsync
 
 ## Directories
 #
@@ -126,10 +126,10 @@ LINUX_VER=4.19.90               # TODO: proper install, no rsync
 # requires a significant amount of disk space. Please ensure you
 # have at least 50GB of free disk space in these directories:
 #
-base="${HOME}/winner_src"       # base source directory
-huge="${HOME}/winner_bld"       # base  build directory
-logs="${HOME}/winner_log"       # suite build log directory
-zips="${HOME}/winner_bin"       # completed toolchains go here
+base="/tmp/winner_src"       # base source directory
+huge="/tmp/winner_bld"       # base  build directory
+logs="/tmp/winner_log"       # suite build log directory
+zips="/tmp/winner_bin"       # completed toolchains go here
 
 ## Toolchain Mirror
 #
@@ -201,7 +201,7 @@ STAT = -static --static
 FLAG = -g0 -O2 -fno-align-functions -fno-align-jumps -fno-align-loops -fno-align-labels
 
 ifneq ($(NATIVE),)
-COMMON_CONFIG += CC="$(HOST)-gcc ${STAT}" CXX="$(HOST)-g++ ${STAT}" FC="$(HOST)-gfortran -${STAT}"
+COMMON_CONFIG += CC="$(HOST)-gcc ${STAT}" CXX="$(HOST)-g++ ${STAT}" FC="$(HOST)-gfortran ${STAT}"
 else
 COMMON_CONFIG += CC="gcc ${STAT}" CXX="g++ ${STAT}" FC="gfortran ${STAT}"
 endif
