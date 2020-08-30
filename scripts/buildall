@@ -13,4 +13,4 @@ LIST=${HERE}/triples.txt
 JOBS=6;
 
 make extract_all;
-grep -v ^# "${LIST}" | parallel --eta --bar --progress -j${JOBS} -a - ${HERE}/build;
+grep -v ^# "${LIST}" | parallel --eta --bar --progress --plain -j${JOBS} -a - ${HERE}/build;
