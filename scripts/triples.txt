@@ -40,7 +40,7 @@ powerpc64-linux-musl
 powerpc64le-linux-musl
 powerpcle-linux-musl
 powerpcle-linux-muslsf
-#riscv32-linux-musl
+riscv32-linux-musl
 riscv64-linux-musl
 s390x-linux-musl
 sh2-linux-musl
@@ -51,6 +51,3 @@ sh4-linux-musl
 sh4eb-linux-musl
 x86_64-linux-musl
 x86_64-linux-muslx32
-#
-#i686-w64-mingw32
-#x86_64-w64-mingw32
