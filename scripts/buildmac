@@ -21,6 +21,9 @@ CSUF=cross
 
 KALE="${PATH}"
 
+# TODO: rewrite this script so that new buildmac is like buildall, current buildmac becomes like build
+make extract_all
+
 mkdir -p ${LOGS} ${BINS}
 for t in $(cat ${LIST} | grep -v "#"); do
     [ -d ${BINS}/${t}-${CSUF} ] || make install \
