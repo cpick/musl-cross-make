@@ -14,6 +14,7 @@ HERE=`pwd -P`/$_
 cd $s
 
 LIST=${HERE}/triples.txt
+CFGS=${HERE}/../sources/config.sub
 
 ##
 # WARNING: YOU MUST BE INSANE TO USE A VALUE GREATER THAN 1 HERE.
@@ -24,8 +25,4 @@ LIST=${HERE}/triples.txt
 JOBS=2;
 
 make extract_all;
-find . -mindepth 2 -name config.sub | grep -v sources | while read k; do
-    rm ${k};
-    ln -s ${HERE}/sources/config.sub ${k};    
-done
 grep -v ^# "${LIST}" | parallel --eta --bar --progress --plain -j${JOBS} -a - ${HERE}/buildmac;
