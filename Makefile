@@ -159,7 +159,6 @@ musl-riscv-%:
 $(foreach dir,$(notdir $(basename $(basename $(basename $(wildcard hashes/*))))),$(eval $(dir): $$(wildcard patches/$(dir) patches/$(dir)/*)))
 
 extract_all: | $(SRC_DIRS)
-	find . -mindepth 2 -name config.sub | grep -v $(SOURCES) | while read k; do rm $${k}; ln -s $(PWD)/$(SOURCES)/config.sub $${k}; done
 
 
 # Rules for building.
