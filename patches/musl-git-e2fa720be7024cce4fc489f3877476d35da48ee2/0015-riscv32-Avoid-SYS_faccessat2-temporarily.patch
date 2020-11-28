@@ -1,0 +1,16 @@
+diff -ur a/src/unistd/faccessat.c b/src/unistd/faccessat.c
+--- a/src/unistd/faccessat.c	2020-11-28 14:26:55.682503786 -0600
++++ b/src/unistd/faccessat.c	2020-11-28 14:30:27.663030780 -0600
+@@ -25,10 +25,12 @@
+ 
+ int faccessat(int fd, const char *filename, int amode, int flag)
+ {
++#ifdef SYS_faccessat2
+ 	if (flag) {
+ 		int ret = __syscall(SYS_faccessat2, fd, filename, amode, flag);
+ 		if (ret != -ENOSYS) return __syscall_ret(ret);
+ 	}
++#endif
+ 
+ 	if (flag & ~AT_EACCESS)
+ 		return __syscall_ret(-EINVAL);
