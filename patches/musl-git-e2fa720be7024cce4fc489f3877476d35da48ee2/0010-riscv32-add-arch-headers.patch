@@ -387,7 +387,7 @@ new file mode 100644
 index 00000000..852d2aaa
 --- /dev/null
 +++ b/arch/riscv32/bits/syscall.h.in
-@@ -0,0 +1,286 @@
+@@ -0,0 +1,287 @@
 +#define __NR_io_setup 0
 +#define __NR_io_destroy 1
 +#define __NR_io_submit 2
@@ -672,6 +672,7 @@ index 00000000..852d2aaa
 +#define __NR_clone3		435
 +#define __NR_openat2		437
 +#define __NR_pidfd_getfd	438
++#define __NR_faccessat2	439
 +
 +#define __NR_futex __NR_futex_time64
 +
