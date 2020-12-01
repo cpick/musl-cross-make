@@ -153,6 +153,7 @@ musl-riscv-%:
 	if test -f $</configfsf.sub ; then cs=configfsf.sub ; elif test -f $</config.sub ; then cs=config.sub ; else exit 0 ; fi ; rm -f $@.tmp/$$cs && cp -f $(SOURCES)/config.sub $@.tmp/$$cs && chmod +x $@.tmp/$$cs
 	rm -rf $@
 	mv $@.tmp $@
+	$(COWPATCH) -S gcc-$(GCC_VER)/libstdc++-v3
 
 
 # Add deps for all patched source dirs on their patchsets
